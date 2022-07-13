@@ -14,3 +14,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.bg-gred{
+  @apply text-white font-bold bg-gradient-to-r from-accent to-secondary border-none
+}
