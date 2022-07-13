@@ -1,9 +1,8 @@
 import React from 'react';
-import banner from "../../assets/images/chair.png";
 
 const Banner = () => {
     return (
-        <div className="hero min-h-screen bg-[url('./assets/images/bg.png')]">
+        <div className="hero min-h-screen bg-banner">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <img  src={banner} className="max-w-sm rounded-lg shadow-2xl" />
                 <div className='lg:w-1/2 p-5'>
