@@ -18,3 +18,6 @@ code {
 .bg-gred{
   @apply text-white font-bold bg-gradient-to-r from-accent to-secondary border-none
 }
+.bg-dark{
+  @apply bg-primary
+}

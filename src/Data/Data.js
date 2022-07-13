@@ -16,7 +16,7 @@ export const infoData = [
         title: 'Visit Our Location',
         description: 'Brooklyn, NY 10003 USA',
         Icon: marker,
-        background: 'primary'
+        background: 'dark'
     },
     {
         id:3,

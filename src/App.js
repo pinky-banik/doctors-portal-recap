@@ -1,4 +1,5 @@
 import {Routes,Route} from 'react-router-dom';
+import Footer from './Components/Shared/Footer';
 import Navbar from './Components/Shared/Navbar';
 import About from './Pages/About';
 import Appointment from './Pages/Appointment';
@@ -18,6 +19,7 @@ function App() {
         <Route path='/login' element={<Login/>}></Route>
         <Route path='*' element={<Error/>}></Route>
       </Routes>
+      <Footer/>
     </div>
   );
 }
