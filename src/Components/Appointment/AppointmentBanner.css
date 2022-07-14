@@ -1,0 +1,7 @@
+.my-selected:not([disabled]) { 
+    margin: auto;
+  }
+  .my-today{
+    margin: auto;
+    padding: auto;
+  }
