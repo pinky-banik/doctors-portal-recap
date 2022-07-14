@@ -7,9 +7,9 @@ const AvailbleAppointments = ({date}) => {
     const [services,setServices] = useState([]);
     const [title,setTitle] = useState('');
     const[slots,setSlots] = useState([]);
+    const[treatment,setTreatment] = useState({});
 
-   
-
+    const today = new Date();
     useEffect(()=>{
         fetch('services.json')
         .then(res=>res.json())
@@ -17,6 +17,7 @@ const AvailbleAppointments = ({date}) => {
     },[]);
     return (
         <div className='py-10 text-center'>
+            <div>
             <h1 className=' text-center text-2xl font-semibold text-accent'>
             Available Appointments On {format(date,'PP')}
             </h1>
@@ -33,17 +34,24 @@ const AvailbleAppointments = ({date}) => {
                     ))
                 }
             </div>
+            </div>
             <div className=' my-10'>
-                {slots.length>0  ? <h1 className='my-10 py-10 text-center text-2xl font-semibold text-accent'>Available slots for Teeth Orthodontics.</h1>:''}
+                {slots.length ? <h1 className='my-10 py-10 text-center text-2xl font-semibold text-accent'>Available slots for Teeth Orthodontics. <br /><span className='text-gray-500 text-[18px]'>{slots.length} slots are available</span></h1>:''}
+                
             <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:w-4/5 mx-auto'>
                 {
                     slots.map(slot=><AppointmentService
                     key={slot}
                     slot={slot}
                     title={title}
+                    setTreatment={setTreatment}
+                    treatment={treatment}
+                    date={date}
+                    slots={slots}
                     />)
                 }
             </div>
+            
             </div>
         </div>
     );
