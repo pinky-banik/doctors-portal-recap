@@ -13,8 +13,8 @@ const AppointmentService = ({title,slot}) => {
             <h2 className="card-title text-accent">{title}</h2>
             <p>{slot}</p>
             </div>
-            <div className="card-actions justify-end">
-            <button className="btn bg-gred uppercase">Book Appointment</button>
+            <div className="flex justify-center">
+            <button className="btn bg-gred uppercase ">Book Appointment</button>
             </div>
         </div>
         </div>
