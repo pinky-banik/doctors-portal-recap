@@ -11,7 +11,7 @@ const AppoinmentCard = () => {
         <p className='text-2xl text-accent font-semibold my-3'>Appointment</p>
       <h1 className="mb-5 text-4xl font-bold">Make an appointment Today</h1>
       <p className="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi necessitatibus veniam sed exercitationem, quae tenetur. Iste cupiditate ex eius aperiam nemo vero similique, repudiandae consectetur.</p>
-      <button className="btn bg-gred">Get Started</button>
+      <button className="btn-animate btn bg-gred">Get Started</button>
     </div>
 </div>
     );

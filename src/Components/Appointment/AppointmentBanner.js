@@ -15,7 +15,7 @@ const AppointmentBanner = ({date, setDate}) => {
             <img src={chair} className="md:w-1/2 rounded-lg shadow-2xl  m-10 " />
             <div className='shadow-md m-10 md:h-[22rem] md:w-[22rem] flex justify-center items-center rounded-lg'>
             <div>
-            <DayPicker  className='my-selected my-today'
+            <DayPicker  className='btn-animate my-selected my-today'
             mode="single"
             selected={date}
             onSelect={setDate}

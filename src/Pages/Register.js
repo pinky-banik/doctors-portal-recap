@@ -1,50 +1,73 @@
-import React, { useEffect} from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import auth from './../Firebase/Firebase.init';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import React  from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../Firebase/Firebase.init';
 import { useForm } from "react-hook-form";
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import loader from '../assets/images/22.gif';
 
-const Login = () => {
+const Register = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
+
     const [
-        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
         user,
         loading,
         error,
-    ] = useSignInWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth);
+
+    const [updateProfile, updating, uError] = useUpdateProfile(auth);
 
     let signInError;
     const navigate = useNavigate();
-    const location = useLocation();
-    let from = location.state?.from?.pathname || "/";
 
-    useEffect( () =>{
-        if (user || gUser) {
-            navigate(from, { replace: true });
-        }
-    }, [user, gUser, from, navigate])
 
-    if (loading || gLoading) {
+    if (loading || gLoading || updating) {
         return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>
     }
 
-    if(error || gError){
-        signInError= <p className='text-red-500'><small>{error?.message || gError?.message }</small></p>
+    if(error || gError || uError){
+        signInError= <p className='text-red-500'><small>{error?.message || gError?.message || uError.message }</small></p>
+    }
+    if(user || gUser){
+        console.log(user|| gUser);
     }
 
-    const onSubmit = data => {
-        signInWithEmailAndPassword(data.email, data.password);
+    const onSubmit =async data => {
+        await createUserWithEmailAndPassword(data.email, data.password);
+        await updateProfile({ displayName: data.name});
+        navigate('/appointment');
     }
 
+    
+    
     return (
-        <div className='flex h-screen justify-center items-center'>
+        <div className='flex min-h-screen justify-center items-center'>
             <div className="card w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
-                    <h2 className="text-center text-2xl font-bold">Login</h2>
+                    <h2 className="text-center text-2xl font-bold">Register</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
 
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Name</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Your Name"
+                                className="input input-bordered w-full max-w-xs focus:outline-none"
+                                {...register("name", {
+                                    required: {
+                                        value: true,
+                                        message: 'Name is Required'
+                                    },
+                                })}
+                            />
+                            <label className="label">
+                                {errors.name?.type === 'required' && <span className="label-text-alt text-red-500">{errors.name.message}</span>}
+                                
+                            </label>
+                        </div>
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text">Email</span>
@@ -93,11 +116,10 @@ const Login = () => {
                                 {errors.password?.type === 'minLength' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
                             </label>
                         </div>
-
                         {signInError}
-                        <input className='btn w-full max-w-xs text-white' type="submit" value="Login" />
+                        <input className='btn w-full max-w-xs text-white' type="submit" value="Register" />
                     </form>
-                     <Link to="/register"><p className='btn-animate text-center text-sm font-semibold text-gray-600 cursor-pointer'>New to Doctors Portal? <span className='text-accent'>Create New account</span></p></Link>
+                     <Link to="/login"><p className='btn-animate text-center text-sm font-semibold text-gray-600 cursor-pointer'>Already Regisred? <span className='text-accent'>Please Login</span></p></Link>
                     <div className="divider">OR</div>
                     <button
                         onClick={() => signInWithGoogle()}
@@ -109,4 +131,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

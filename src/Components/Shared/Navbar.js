@@ -1,7 +1,22 @@
+import { signOut } from 'firebase/auth';
 import React from 'react';
-import { Link } from 'react-router-dom';
-
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../../Firebase/Firebase.init';
+import loader from '../../assets/images/22.gif';
 const Navbar = () => {
+  const[user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+
+  const handleSignOut = () =>{
+    signOut(auth);
+
+   navigate('/');
+}
+    if (loading ) {
+      return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>
+    }
+
   const menuItems = 
   <>
         <li className='px-2 focus:bg-acent'><Link to = "/">Home</Link></li>
@@ -9,10 +24,22 @@ const Navbar = () => {
         <li className='px-2 focus:bg-acent'><Link to = "/appointment">Appointment</Link></li>
         <li className='px-2 focus:bg-acent'><Link to = "/reviews">Revicews</Link></li>
         <li className='px-2 focus:bg-acent'><Link to = "/contact">Contact Us</Link></li>
-        <li className='px-2 focus:bg-acent'><Link to = "/login">Login</Link></li>
+        {
+          user?.uid ?
+          <div className='lg:flex'>
+            <li><h1 className='p-2 font-bold text-accent px-4'>{user?.displayName}</h1></li>
+            <li><button onClick={handleSignOut} className='btn bg-gred cursor-pointer'>Logout</button></li>
+          </div>
+          :
+          <div className='lg:flex '>
+            <li className='px-2 focus:bg-acent'><Link to = "/login">Login</Link></li>
+            <li className='px-2 focus:bg-acent'><Link to = "/register">Register</Link></li>
+
+          </div>
+        }
         </>
     return (
-      <div className="navbar bg-base-100 sticky ">
+      <div className="navbar bg-base-100 fixed">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex="0" className="btn btn-ghost lg:hidden">

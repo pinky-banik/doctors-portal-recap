@@ -21,3 +21,6 @@ code {
 .bg-dark{
   @apply bg-primary
 }
+.btn-animate{
+  @apply transition duration-300 hover:scale-95 transform;
+}

@@ -1,13 +1,23 @@
 import { format } from 'date-fns';
 import React, { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import loader from '../../assets/images/22.gif';
+import auth from '../../Firebase/Firebase.init';
 
 const AppointmentService = ({title,slot,setTreatment,treatment,date,slots}) => {
     const [openBooking, setBookingOpen] = useState(false);
+    const [user,loading] = useAuthState(auth);
+
+
      const handleSubmit= e =>{
         e.preventDefault();
         console.log(e.target.slot.value);
         setBookingOpen(false);
      };
+
+     if (loading ) {
+        return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>
+      }
     return (
         <div className="shadow-lg shadow-gray-200 m-5 rounded-lg">
         <div className="card-body text-center flex justify-center items-center">
@@ -17,7 +27,7 @@ const AppointmentService = ({title,slot,setTreatment,treatment,date,slots}) => {
             </div>
             <div className="flex justify-center">
             {/* -------------modal--------------- */}
-            <label onClick={()=>setBookingOpen(true)} htmlFor="booking-modal" className="btn bg-gred uppercase">Book Appointment</label>
+            <label onClick={()=>setBookingOpen(true)} htmlFor="booking-modal" className="btn-animate btn bg-gred uppercase">Book Appointment</label>
             {
                 openBooking && 
                 <div>
@@ -33,12 +43,12 @@ const AppointmentService = ({title,slot,setTreatment,treatment,date,slots}) => {
                 {slot}
             </option>)}
             </select>
-            <input type="text" name="name" placeholder="Full Name" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" required/>
+            <input type="text" name="name" placeholder="Full Name" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" value={user.displayName} disabled/>
+            <input type="email"  name="email" placeholder="Email" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" value={user.email} disabled/>
             <input type="number" name="number" placeholder="Phone Number" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" required/>
-            <input type="email"  name="email" placeholder="Email" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" required/>
             
             <div>
-            <button className="btn bg-gred mx-auto" type="submit">Submit</button>
+            <button className="btn-animate btn bg-gred mx-auto" type="submit">Submit</button>
             </div>
             </form>
             
