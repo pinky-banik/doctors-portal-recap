@@ -1,18 +1,46 @@
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 import loader from '../../assets/images/22.gif';
 import auth from '../../Firebase/Firebase.init';
 
-const AppointmentService = ({title,slot,setTreatment,treatment,date,slots}) => {
+const AppointmentService = ({_id,title,slot,setTreatment,treatment,date,slots}) => {
     const [openBooking, setBookingOpen] = useState(false);
     const [user,loading] = useAuthState(auth);
+    const formattedDate = format(date,'PP');
 
 
      const handleSubmit= e =>{
         e.preventDefault();
         console.log(e.target.slot.value);
         setBookingOpen(false);
+        const booking={
+            treatmentId: _id,
+            treatment: title,
+            date : formattedDate,
+            slot :slot,
+            patient : user.email,
+            patientName : user.displayName,
+            phone : e.target.phone.value,
+        }
+
+
+        fetch('http://localhost:4000/booking',{
+            method : 'POST',
+            headers :{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(booking)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            if(data.success){
+                toast.success(`Your appointment has been booked on ${formattedDate} at ${slot} for ${data.booking?.treatment}`) ;
+            }else{
+                toast.error(`You already have an appointment on ${data.booking?.date} for ${data.booking?.treatment}` );
+            }
+        })
      };
 
      if (loading ) {
@@ -45,7 +73,7 @@ const AppointmentService = ({title,slot,setTreatment,treatment,date,slots}) => {
             </select>
             <input type="text" name="name" placeholder="Full Name" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" value={user.displayName} disabled/>
             <input type="email"  name="email" placeholder="Email" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" value={user.email} disabled/>
-            <input type="number" name="number" placeholder="Phone Number" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" required/>
+            <input type="number" name="phone" placeholder="Phone Number" className="input m-2 input-bordered focus:outline-none border-2 border-primary w-full max-w-xs" required/>
             
             <div>
             <button className="btn-animate btn bg-gred mx-auto" type="submit">Submit</button>

@@ -27,7 +27,7 @@ const Navbar = () => {
         {
           user?.uid ?
           <div className='lg:flex'>
-            <li><h1 className='p-2 font-bold text-accent px-4'>{user?.displayName}</h1></li>
+            <h1 className='p-2 font-bold text-accent px-4'>{user?.displayName}</h1>
             <li><button onClick={handleSignOut} className='btn bg-gred cursor-pointer'>Logout</button></li>
           </div>
           :

@@ -11,7 +11,7 @@ const AvailbleAppointments = ({date}) => {
 
     const today = new Date();
     useEffect(()=>{
-        fetch('services.json')
+        fetch('http://localhost:4000/services')
         .then(res=>res.json())
         .then(data=>setServices(data));
     },[]);
