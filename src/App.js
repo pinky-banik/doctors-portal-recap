@@ -11,14 +11,27 @@ import Register from './Pages/Register';
 import RequireAuth from './RequireAuth/RequireAuth';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Dashboard from './Pages/Dashboard';
+import MyAppointment from './Components/Dashboard/MyAppointment';
+import MyReview from './Components/Dashboard/MyReview';
+import { useState } from 'react';
+import MyHistory from './Components/Dashboard/MyHistory';
 function App() {
+  const[sidebar,setSidebar] =useState(true);
   return (
     <div>
-      <Navbar/>
+      <Navbar sidebar={sidebar}/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/about' element={<About/>}></Route>
         <Route path='/appointment' element={<RequireAuth><Appointment/></RequireAuth>}></Route>
+
+        <Route path="/dashboard" element={<RequireAuth><Dashboard setSidebar={setSidebar}/></RequireAuth>} >
+          <Route index element={<MyAppointment/>}></Route>
+          <Route path="review" element={<MyReview/>}></Route>
+          <Route path="history" element={<MyHistory/>}></Route>
+        </Route>
+
         <Route path='/contact' element={<Contact/>}></Route>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/register' element={<Register/>}></Route>

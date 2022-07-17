@@ -1,20 +1,34 @@
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, {useState} from 'react';
 import AppointmentService from './AppointmentService';
 import AvailableAppointmentService from './AvailableAppointmentService';
+import loader from '../../assets/images/22.gif';
+import {useQuery} from 'react-query';
 
 const AvailbleAppointments = ({date}) => {
-    const [services,setServices] = useState([]);
+    // const [servicess,setServices] = useState([]);
     const [title,setTitle] = useState('');
     const[slots,setSlots] = useState([]);
     const[treatment,setTreatment] = useState({});
 
     const today = new Date();
-    useEffect(()=>{
-        fetch('http://localhost:4000/services')
+    const formatedDate= format(date,'PP');
+    // useEffect(()=>{
+    //     fetch(`http://localhost:4000/available?date=${formatedDate}`)
+    //     .then(res=>res.json())
+    //     .then(data=>setServices(data));
+    // },[formatedDate]);
+
+    //using react query instead of useEffect
+
+    const {data:services,isLoading,refetch} = useQuery(['available',formatedDate],()=>
+    fetch(`http://localhost:4000/available?date=${formatedDate}`)
         .then(res=>res.json())
-        .then(data=>setServices(data));
-    },[]);
+    )
+    if(isLoading){
+        return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>
+    }
+
     return (
         <div className='py-10 text-center'>
             <div>
@@ -24,7 +38,7 @@ const AvailbleAppointments = ({date}) => {
             <p className='p-5 text-gray-400 text-lg'>Please select a service</p>
             <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:w-4/5 mx-auto'>
                 {
-                    services.map(service=>(
+                    services?.map(service=>(
                         <AvailableAppointmentService
                         key={service._id}
                         service={service}
@@ -48,6 +62,8 @@ const AvailbleAppointments = ({date}) => {
                     treatment={treatment}
                     date={date}
                     slots={slots}
+                    refetch={refetch}
+                    isLoading = {isLoading}
                     />)
                 }
             </div>

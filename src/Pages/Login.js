@@ -4,6 +4,7 @@ import auth from './../Firebase/Firebase.init';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import loader from '../assets/images/22.gif';
+import useToken from '../Hooks/useToken';
 
 const Login = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -20,11 +21,13 @@ const Login = () => {
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
 
+    const [token] = useToken(user||gUser);
+
     useEffect( () =>{
-        if (user || gUser) {
+        if (token) {
             navigate(from, { replace: true });
         }
-    }, [user, gUser, from, navigate])
+    }, [token, from, navigate])
 
     if (loading || gLoading) {
         return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>

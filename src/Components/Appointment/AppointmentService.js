@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import loader from '../../assets/images/22.gif';
 import auth from '../../Firebase/Firebase.init';
 
-const AppointmentService = ({_id,title,slot,setTreatment,treatment,date,slots}) => {
+const AppointmentService = ({_id,title,slot,setTreatment,treatment,date,slots,refetch,isLoading}) => {
     const [openBooking, setBookingOpen] = useState(false);
     const [user,loading] = useAuthState(auth);
     const formattedDate = format(date,'PP');
@@ -14,7 +14,6 @@ const AppointmentService = ({_id,title,slot,setTreatment,treatment,date,slots}) 
      const handleSubmit= e =>{
         e.preventDefault();
         console.log(e.target.slot.value);
-        setBookingOpen(false);
         const booking={
             treatmentId: _id,
             treatment: title,
@@ -40,10 +39,12 @@ const AppointmentService = ({_id,title,slot,setTreatment,treatment,date,slots}) 
             }else{
                 toast.error(`You already have an appointment on ${data.booking?.date} for ${data.booking?.treatment}` );
             }
-        })
+            refetch();
+            setBookingOpen(false);
+        });
      };
 
-     if (loading ) {
+     if (loading || isLoading) {
         return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>
       }
     return (
