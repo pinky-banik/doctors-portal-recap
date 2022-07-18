@@ -1,18 +1,17 @@
 import { signOut } from 'firebase/auth';
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../Firebase/Firebase.init';
 import loader from '../../assets/images/22.gif';
 const Navbar = ({sidebar}) => {
-  const[user, loading, error] = useAuthState(auth);
+  const[user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   const handleSignOut = () =>{
     signOut(auth);
     localStorage.removeItem('accessToken');
-
-   navigate('/');
+    navigate('/');
   }
     if (loading ) {
       return <div className='flex h-screen justify-center items-center'><img  src={loader} alt="" /></div>
