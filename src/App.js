@@ -18,6 +18,7 @@ import { useState } from 'react';
 import MyHistory from './Components/Dashboard/MyHistory';
 import AllUsers from './Components/Dashboard/AllUsers';
 import RequireAdmin from './RequireAuth/RequireAdmin';
+import AddDoctor from './Components/Dashboard/AddDoctor';
 function App() {
   const[sidebar,setSidebar] =useState(true);
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="review" element={<MyReview/>}></Route>
           <Route path="history" element={<MyHistory/>}></Route>
           <Route path="users" element={<RequireAdmin><AllUsers/></RequireAdmin>}></Route>
+          <Route path="addDoctor" element={<RequireAdmin><AddDoctor/></RequireAdmin>}></Route>
         </Route>
 
         <Route path='/contact' element={<Contact/>}></Route>

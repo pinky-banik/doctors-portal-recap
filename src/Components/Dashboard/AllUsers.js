@@ -11,7 +11,7 @@ const AllUsers = () => {
 
     const navigate = useNavigate();
     const {data:users,isLoading,refetch} = useQuery(['available'],()=>
-    fetch("http://localhost:4000/user", {
+    fetch("https://fast-springs-40726.herokuapp.com/user", {
         method: 'GET',
         headers: {
     'authorization':
@@ -34,7 +34,7 @@ const AllUsers = () => {
     }
 
     const handleMakeAdmin = email =>{
-        fetch(`http://localhost:4000/user/admin/${email}`,{
+        fetch(`https://fast-springs-40726.herokuapp.com/user/admin/${email}`,{
             method:'PUT',
             headers:{
                 authorization : `Bearer ${localStorage.getItem('accessToken')}`

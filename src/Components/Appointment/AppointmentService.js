@@ -25,7 +25,7 @@ const AppointmentService = ({_id,title,slot,setTreatment,treatment,date,slots,re
         }
 
 
-        fetch('http://localhost:4000/booking',{
+        fetch('https://fast-springs-40726.herokuapp.com/booking',{
             method : 'POST',
             headers :{
                 'content-type':'application/json'

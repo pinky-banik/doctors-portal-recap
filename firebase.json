@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "site": "doctors-portal-tailwind",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+// firebase deploy --only hosting:doctors-portal-tailwind

@@ -6,6 +6,8 @@ import auth from '../../Firebase/Firebase.init';
 import loader from '../../assets/images/22.gif';
 const Navbar = ({sidebar}) => {
   const[user, loading] = useAuthState(auth);
+  const image = user?.photoURL;
+  console.log(user);
   const navigate = useNavigate();
 
   const handleSignOut = () =>{
@@ -31,6 +33,11 @@ const Navbar = ({sidebar}) => {
         {
           user?.uid ?
           <div className='lg:flex'>
+            <div className='avatar'>
+              <div className="w-10 my-auto  rounded-full ring ring-accent">
+                <img className='object-contain rounded-full' src={image} />
+              </div>
+            </div>
             <h1 className='p-2 font-bold text-accent px-4'>{user?.displayName}</h1>
             <li><button onClick={handleSignOut} className='btn bg-gred cursor-pointer'>Logout</button></li>
           </div>

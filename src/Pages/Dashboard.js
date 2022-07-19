@@ -32,7 +32,10 @@ const Dashboard = ({setSidebar}) => {
             <li className='border-b-2'><Link to="/dashboard/history">My History</Link></li>
             {
                 admin && 
+                <>
                 <li className='border-b-2'><Link to="/dashboard/users">All Users</Link></li>
+                <li className='border-b-2'><Link to="/dashboard/addDoctor">Add a Doctor</Link></li>
+                </>
             }
             <li className='border-b-2'><button onClick={()=>signOut(auth)} className='btn bg-gred cursor-pointer'>Logout</button></li>
             </ul>

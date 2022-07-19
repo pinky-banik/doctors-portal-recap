@@ -13,7 +13,7 @@ const MyAppointment = () => {
     const navigate = useNavigate();
 
     const {data:appointments,isLoading} = useQuery(['bookings',user],()=>
-    fetch(`http://localhost:4000/booking?patient=${user.email}`, {
+    fetch(`https://fast-springs-40726.herokuapp.com/booking?patient=${user.email}`, {
       method: 'GET',
       headers: {
         'authorization': `Bearer ${localStorage.getItem('accessToken')}`       

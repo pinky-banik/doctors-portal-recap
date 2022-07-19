@@ -7,7 +7,7 @@ const useToken = user => {
         const email = user?.user?.email;
         const currentUser ={email:email};
         if(email){
-            fetch(`http://localhost:4000/user/${email}`,{
+            fetch(`https://fast-springs-40726.herokuapp.com/user/${email}`,{
                 method : 'PUT',
                 headers:{
                     'content-type' :'application/json'
@@ -16,7 +16,6 @@ const useToken = user => {
             })
             .then(res=>res.json())
             .then(data=>{
-                console.log('data inside useToken',data);
                 const accessToken = data.token;
                 localStorage.setItem('accessToken',accessToken);
                 setToken(accessToken);

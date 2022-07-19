@@ -8,6 +8,10 @@ import useToken from './../Hooks/useToken';
 
 const Register = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    
+    const imgStorageKey ='e45298c57c6b915f179ec8d9543b8284';
+
+
     const { register, formState: { errors }, handleSubmit } = useForm();
 
     const [
@@ -36,9 +40,37 @@ const Register = () => {
         navigate('/');
     }
 
+    /**
+     * 3 ways to store images
+     * 1. use third party storage //free open public storage is ok for practise project..but.not for real world websites
+     * 2.Your own storage in your own server(file system)
+     * 3. Database :mongodb //we are using  mongodb free.. so the verifing, sizing, or validate images is much tricky than email or password
+     * 
+     * THere are some systems for doing it like:--
+     * 1.YUP: to validate file :  Search : Yup file validation for react hook form
+     * 
+     * But now we will use third party storage like imgbb
+    */
+
     const onSubmit =async data => {
+        const image= data.image[0];
+        const url = `https://api.imgbb.com/1/upload?key=${imgStorageKey}`;
+        let img;
+        const formData = new  FormData(); //this thing is coming from uploading a file.. mozila cdn docs
+        formData.append('image',image);
+        await fetch(url,{
+            method:'POST',
+            body: formData,
+        })
+        .then(res=>res.json())
+        .then(result=>{
+             if(result.success){
+               img= result.data.url;
+            }
+            console.log(result);
+        });
         await createUserWithEmailAndPassword(data.email, data.password);
-        await updateProfile({ displayName: data.name});
+        await updateProfile({ displayName: data.name ,photoURL:img});
         // navigate('/appointment');
     }
 
@@ -117,6 +149,25 @@ const Register = () => {
                             <label className="label">
                                 {errors.password?.type === 'required' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
                                 {errors.password?.type === 'minLength' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
+                            </label>
+                        </div>
+                        {/* Photo upload */}
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Photo</span>
+                            </label>
+                            <input
+                                type="file"
+                                className="p-3 border-2 rounded-xl w-full max-w-xs focus:outline-none"
+                                {...register("image", {
+                                    required: {
+                                        value: true,
+                                        message: 'Image is Required'
+                                    }
+                                })}
+                            />
+                            <label className="label">
+                                {errors.image?.type === 'required' && <span className="label-text-alt text-red-500">{errors.image.message}</span>}
                             </label>
                         </div>
                         {signInError}

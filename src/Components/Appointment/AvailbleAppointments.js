@@ -14,7 +14,7 @@ const AvailbleAppointments = ({date}) => {
     const today = new Date();
     const formatedDate= format(date,'PP');
     // useEffect(()=>{
-    //     fetch(`http://localhost:4000/available?date=${formatedDate}`)
+    //     fetch(`https://fast-springs-40726.herokuapp.com/available?date=${formatedDate}`)
     //     .then(res=>res.json())
     //     .then(data=>setServices(data));
     // },[formatedDate]);
@@ -22,7 +22,7 @@ const AvailbleAppointments = ({date}) => {
     //using react query instead of useEffect
 
     const {data:services,isLoading,refetch} = useQuery(['available',formatedDate],()=>
-    fetch(`http://localhost:4000/available?date=${formatedDate}`)
+    fetch(`https://fast-springs-40726.herokuapp.com/available?date=${formatedDate}`)
         .then(res=>res.json())
     )
     if(isLoading){
